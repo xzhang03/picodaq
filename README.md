@@ -20,3 +20,6 @@ ADS131M04 pico library is here: https://github.com/xzhang03/Pico-ADS131M04
 
 ## Integration
 This part has been integrated into Nanosec photometry: https://github.com/xzhang03/NidaqGUI
+
+## Footprint
+![footprint](https://github.com/xzhang03/picodaq/blob/main/PCB/FDA%20v1.1/footprint.png)
