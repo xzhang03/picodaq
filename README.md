@@ -14,7 +14,7 @@ A raspberry pi pico inplementation of a daq acquisition board.
 ### ADC noise (RMS)
 | PicoDAQ | NIDAQ USB6210 |
 | ------- | ---------- |
-| X | 2.4 mV |
+| 0.6 mV | 2.4 mV |
 
 ## Hardwares
 0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller that is used to synchronize data collection and send data over USB.
