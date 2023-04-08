@@ -8,6 +8,14 @@ A raspberry pi pico inplementation of a daq acquisition board.
 1. A 32-bit digital data word. Bit 0-15 correspond to digital inputs 0-15. Bit 16 is always 1. Bit 17-31 are 0s.
 2. Four 32-bit analog data words. These are signed integers and to convert them to voltage, use the formula V = X * 1.2 * 8 / 2^23.
 
+## Examples
+
+
+### ADC noise (RMS)
+| PicoDAQ | NIDAQ USB6210 |
+| ------- | ---------- |
+| 0.6 mV | 2.4 mV |
+
 ## Hardwares
 0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller that is used to synchronize data collection and send data over USB.
 1. ADC: ADS131M04 is a 4-channel, 24 bit, 32 ksps non-mux delta-sigma ADC. It can convert -1.2V to 1.2V on 4 differential channels. This ADC is clocked by SiT2024B.
