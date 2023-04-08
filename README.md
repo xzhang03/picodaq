@@ -9,7 +9,14 @@ A raspberry pi pico inplementation of a daq acquisition board.
 2. Four 32-bit analog data words. These are signed integers and to convert them to voltage, use the formula V = X * 1.2 * 8 / 2^23.
 
 ## Examples
+### 50 Hz sine wave (sampled at 2.5 kHz)
+![Sine](https://github.com/xzhang03/picodaq/blob/main/images/sine.png)
 
+### 50 Hz triangle wave (sampled at 2.5 kHz)
+![triangle](https://github.com/xzhang03/picodaq/blob/main/images/triangle.png)
+
+### 8.93 Hz square wave (sampled at 2.5 kHz)
+![Square](https://github.com/xzhang03/picodaq/blob/main/images/square.png)
 
 ### ADC noise (RMS)
 | PicoDAQ | NIDAQ USB6210 |
