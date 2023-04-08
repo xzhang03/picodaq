@@ -15,7 +15,7 @@ A raspberry pi pico inplementation of a daq acquisition board.
 ### 50 Hz triangle wave (sampled at 2.5 kHz)
 ![triangle](https://github.com/xzhang03/picodaq/blob/main/images/triangle.png)
 
-### 8.93 Hz square wave (sampled at 2.5 kHz)
+### 8.93 Hz square wave (sampled at 2.5 kHz). Made with NE555.
 ![Square](https://github.com/xzhang03/picodaq/blob/main/images/square.png)
 
 ### ADC noise (RMS)
