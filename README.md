@@ -8,6 +8,15 @@ A raspberry pi pico inplementation of a daq acquisition board.
 1. A 32-bit digital data word. Bit 0-15 correspond to digital inputs 0-15. Bit 16 is always 1. Bit 17-31 are 0s.
 2. Four 32-bit analog data words. These are signed integers and to convert them to voltage, use the formula V = X * 1.2 * 8 / 2^23.
 
+| Word | Meaning | Range |
+| ---- | ------- | ----- |
+| 0 | Timestampe | 0 - 2^32-1 (~20 days in 2.5 kHz) |
+| 1 | Digital readings 0-15 | 0B1 0000 0000 0000 0000 - 0B1 1111 1111 1111 1111 (65536 - 131071) |
+| 2 | A0 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
+| 3 | A1 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
+| 4 | A2 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
+| 5 | A3 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
+
 ## Examples
 ### 50 Hz sine wave (sampled at 2.5 kHz)
 ![Sine](https://github.com/xzhang03/picodaq/blob/main/images/sine.png)
