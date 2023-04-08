@@ -22,6 +22,7 @@ A raspberry pi pico inplementation of a daq acquisition board.
 | PicoDAQ | NIDAQ USB6210 |
 | ------- | ---------- |
 | 0.6 mV | 2.4 mV |
+| ~0.012% dF/F photometry | ~0.048% dF/F photometry |
 
 ## Hardwares
 0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller that is used to synchronize data collection and send data over USB.
