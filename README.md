@@ -18,11 +18,11 @@ A raspberry pi pico inplementation of a daq acquisition board.
 ### 8.93 Hz square wave (sampled at 2.5 kHz). Made with NE555.
 ![Square](https://github.com/xzhang03/picodaq/blob/main/images/square.png)
 
-### ADC noise (RMS)
-| PicoDAQ | NIDAQ USB6210 |
-| ------- | ---------- |
-| 0.6 mV | 2.4 mV |
-| ~0.012% dF/F photometry | ~0.048% dF/F photometry |
+### ADC noise
+| | PicoDAQ | NIDAQ USB6210 |
+| - | ------- | ---------- |
+| RMS | 0.6 mV | 2.4 mV |
+| equavalent in photometry | ~0.012% dF/F | ~0.048% dF/F |
 
 ## Hardwares
 0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller that is used to synchronize data collection and send data over USB.
