@@ -10,7 +10,7 @@ A raspberry pi pico inplementation of a daq acquisition board.
 
 | Word | Meaning | Range |
 | ---- | ------- | ----- |
-| 0 | Timestampe | 0 - 2^32-1 (~20 days in 2.5 kHz) |
+| 0 | Timestamp | 0 - 2^32-1 (~20 days in 2.5 kHz) |
 | 1 | Digital readings 0-15 | 0B1 0000 0000 0000 0000 - 0B1 1111 1111 1111 1111 (65536 - 131071) |
 | 2 | A0 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
 | 3 | A1 | -2^23 - 2^23 (-8388608 - 8388608 => -9.6V - 9.6V) | 
