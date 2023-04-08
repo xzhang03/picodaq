@@ -25,7 +25,7 @@ A raspberry pi pico inplementation of a daq acquisition board.
 | equavalent in photometry | ~0.012% dF/F | ~0.048% dF/F |
 
 ## Hardwares
-0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller that is used to synchronize data collection and send data over USB.
+0. Rasperry pi pico is a 133Mhz dual M0 core microcontroller. One core is used exclusively to babysit the ADC, and the other core is responsible for digital data collection, data synchronization, and USB communication.
 1. ADC: ADS131M04 is a 4-channel, 24 bit, 32 ksps non-mux delta-sigma ADC. It can convert -1.2V to 1.2V on 4 differential channels. This ADC is clocked by SiT2024B.
 2. Preprocessing: THS4531ID is a fully-differential amplifier to preprocess analog inputs by dividing the voltage differential by 8, which expands the ADC range to -9.6V to 9.6V. I chose an FDA instead of a resistor ladder to downsize signals to preserve high input impedance and reduce the battery drain of the signal source.
 3. 74LVC245 is an 8-channel digital transceiver that is used as a logic shifter to convert input digital signals to 3.3V logic. Two of these were used to gather 16 channel digital data.
