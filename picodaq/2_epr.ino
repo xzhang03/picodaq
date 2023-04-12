@@ -2,7 +2,9 @@
 
 bool eeprom_ini(void){
   // Initialize
-  ee.begin();
+  #if !autoeeini
+    ee.begin();
+  #endif
 
   bool connection = ee.isConnected();
   #if debugmode
@@ -147,7 +149,7 @@ bool applyoffsetcal_epr(byte chtemp){
       Serial.print(" at address ");
       Serial.println(addr);
     #endif
-    adc.setChannelOffsetCalibration(cal, chtemp);
+    adc.setChannelOffsetCalibration(chtemp, cal);
 
     switch (chtemp){
       case 0:

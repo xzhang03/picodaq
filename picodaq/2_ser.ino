@@ -547,7 +547,15 @@ void parseserial(void){
 
     case 35:
       // 35: Read 4 bytes from an eeprom address (0, 4, 8, 12<, 16@, 20D, 24H, 28L, 32P, 36T, 40X)[S]
-      readcal(n);
+      {
+        uint32_t readval = readcal(n);
+        byte bvec[4];
+        bvec[3] = (readval >> 24) & 0xFF;
+        bvec[2] = (readval >> 16) & 0xFF;
+        bvec[1] = (readval >> 8) & 0xFF;
+        bvec[0] = (readval) & 0xFF;
+        Serial.write(bvec, 4);
+      }
       break;
 
     case 36:
@@ -599,6 +607,103 @@ void parseserial(void){
       // 43: Use cmax (n = 1 true) [[]
       usecmax = (n == 1);
       break;
+
+    case 44:
+      // 44: I2c scan [\]
+      i2c_scan();
+      break;
+
+    case 45:
+      // 45: Get ready to receive a byte of calibration through USB (n = cal selector) []]
+      // First digit: channel
+      // Second digit: 0 - first offset byte, 1 - shift offset byte, 2 - first gain byte, 3 - shift gain byte
+      selcal = n;
+      break;
+
+    case 46:
+      // 46: Receive a byte of calibration through USB (n = cal byte) [^]
+      {
+        byte chselcal = selcal / 10;
+        byte typeselcal = selcal - chselcal * 10;
+        switch (chselcal){
+          case 0:
+            switch (typeselcal){
+              case 0:
+                cal32_0o = n;
+                break;
+              case 1:
+                cal32_0o = (cal32_0o << 8) + n;
+                break;
+              case 2:
+                cal32_0u = n;
+                break;
+              case 3:
+                cal32_0u = (cal32_0u << 8) + n;
+                break;
+            }
+            break;
+          case 1:
+            switch (typeselcal){
+              case 0:
+                cal32_1o = n;
+                break;
+              case 1:
+                cal32_1o = (cal32_1o << 8) + n;
+                break;
+              case 2:
+                cal32_1u = n;
+                break;
+              case 3:
+                cal32_1u = (cal32_1u << 8) + n;
+                break;
+            }
+            break;
+          case 2:
+            switch (typeselcal){
+              case 0:
+                cal32_2o = n;
+                break;
+              case 1:
+                cal32_2o = (cal32_2o << 8) + n;
+                break;
+              case 2:
+                cal32_2u = n;
+                break;
+              case 3:
+                cal32_2u = (cal32_2u << 8) + n;
+                break;
+            }
+            break;
+          case 3:
+            switch (typeselcal){
+              case 0:
+                cal32_3o = n;
+                break;
+              case 1:
+                cal32_3o = (cal32_3o << 8) + n;
+                break;
+              case 2:
+                cal32_3u = n;
+                break;
+              case 3:
+                cal32_3u = (cal32_3u << 8) + n;
+                break;
+            }
+            break;
+        }
+      }
+      break;
+
+    case 47:
+      // 47: Dump 64 bytes from eeprom [_]
+      {
+        byte eemprom_dump[64];
+        for (byte edumpi = 0; edumpi < 64; edumpi++){
+          eemprom_dump[edumpi] = ee.readByte(edumpi);
+        }
+        Serial.write(eemprom_dump, 64);
+      }
+      break;
   }
 }
 
@@ -633,12 +738,32 @@ void showpara(void){
   Serial.println(pow(2, adc_gain));
   Serial.print("ADC buffer depth: ");
   Serial.println(adepth_max);
+
+  Serial.println("============== Calibration ==============");
+  Serial.print("Channel to be externally calibrated: ");
+  Serial.println(chcal);
+  Serial.print("Calibration Selector (USB calibration only): ");
+  Serial.println(selcal);
   Serial.print("Default external calibration voltage (mV): ");
   Serial.println(extv);
   Serial.print("Default external calibration voltage (V): ");
   Serial.println(extvfloat, 5);
-  Serial.print("Channel to be externally calibrated: ");
-  Serial.println(chcal);
+  Serial.print("Ch0 Offset: ");
+  Serial.println(cal32_0o);
+  Serial.print("Ch0 Gain: ");
+  Serial.println(cal32_0u);
+  Serial.print("Ch1 Offset: ");
+  Serial.println(cal32_1o);
+  Serial.print("Ch1 Gain: ");
+  Serial.println(cal32_1u);
+  Serial.print("Ch2 Offset: ");
+  Serial.println(cal32_2o);
+  Serial.print("Ch2 Gain: ");
+  Serial.println(cal32_2u);
+  Serial.print("Ch3 Offset: ");
+  Serial.println(cal32_3o);
+  Serial.print("Ch3 Gain: ");
+  Serial.println(cal32_3u);
 }
 
 // Clear outputs

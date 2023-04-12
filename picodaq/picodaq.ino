@@ -71,11 +71,12 @@ uint32_t cal32_0o, cal32_1o, cal32_2o, cal32_3o, cal32_eo; // stores unsigned 32
 uint32_t extv = 512; // Default external voltage for calibration (mV)
 float extvfloat = 0.512; // Default external voltage for calibration (V)
 byte chcal = 0; // Channel to calibrate
+byte selcal = 0; // Selector for receiving calibration from USB
 
 // ===================== EEPROM =====================
 #include "Wire.h"
 #include "I2C_eeprom.h"
-I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC256);
+I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC16);
 // 0: signature
 // 4, 8, 12, 16: offset cal (0x10 internal, 0x20 external)
 // 20, 24, 28, 32: gain cal (0x10 internal 0x20 external)
@@ -83,6 +84,7 @@ I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC256);
 #define eesigaddr 2
 #define eeintcal 0x10
 #define eeextcal 0x20
+#define autoeeini true
 
 // ===================== Serial =====================
 // Serial

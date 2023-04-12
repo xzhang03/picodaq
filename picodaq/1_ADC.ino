@@ -17,6 +17,11 @@ void setup1() {
     adc.setChannelPGA(i, adc_gain);
   }
 
+  // eeprom
+  #if autoeeini
+    ee.begin();
+  #endif
+  
   // Delay
   delay(100);
 }
@@ -153,7 +158,7 @@ void offsetcal_ext(void){
         cal32_eo += res.ch2;
         break;
       case 3:
-        cal32_eo += res.ch2;
+        cal32_eo += res.ch3;
         break;
     }
   }
