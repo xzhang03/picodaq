@@ -33,9 +33,6 @@ write(picodaq_serial, [41 cmax1], 'uint8');
 write(picodaq_serial, [42 cmax2], 'uint8');
 write(picodaq_serial, [43 1], 'uint8');
 
-% EEPROM
-write(picodaq_serial, [21 0], 'uint8');
-
 % Voltage
 vcal = 4096;
 cmax1 = floor(vcal / 256);

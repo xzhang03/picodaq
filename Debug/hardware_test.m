@@ -56,6 +56,9 @@ while picodaq_serial.NumBytesAvailable > 0
 end
 disp(erase(char(vec), char(10)));
 
+%% Change input (look at ADC internal noise)
+write(picodaq_serial, [13 0], 'uint8');
+
 %% I2c
 write(picodaq_serial, [21 0], 'uint8');
 write(picodaq_serial, [44 0], 'uint8');
