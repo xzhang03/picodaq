@@ -50,6 +50,9 @@ Use the below function in MATLAB to get started:
 picodaq_testpanel();
 ```
 
+## Serial commands
+Please see [here](https://github.com/xzhang03/picodaq/blob/main/picodaq/2_sem.ino) for an up-to-date list
+
 ## Integration
 This part has been integrated into Nanosec photometry: https://github.com/xzhang03/NidaqGUI
 
