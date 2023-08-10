@@ -1,5 +1,6 @@
 # picodaq
 A raspberry pi pico implementation of a data acquisition (DAQ) board.
+![Picture](https://github.com/xzhang03/picodaq/blob/main/images/Picture.png)
 
 ## Default spec
 2.5k data points per second. Each data point includes six 32-bit words that are:
@@ -42,6 +43,12 @@ A raspberry pi pico implementation of a data acquisition (DAQ) board.
 
 ## Library
 ADS131M04 pico library is here: https://github.com/xzhang03/Pico-ADS131M04
+
+## Getting started
+Use the below function in MATLAB to get started:
+```Matlab
+picodaq_testpanel();
+```
 
 ## Integration
 This part has been integrated into Nanosec photometry: https://github.com/xzhang03/NidaqGUI
