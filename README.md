@@ -1,5 +1,5 @@
 # picodaq
-A raspberry pi pico inplementation of a daq acquisition board.
+A raspberry pi pico implementation of a data acquisition (DAQ) board.
 
 ## Default spec
 2.5k data points per second. Each data point includes six 32-bit words that are:
