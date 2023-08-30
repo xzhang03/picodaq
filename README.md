@@ -58,3 +58,6 @@ This part has been integrated into Nanosec photometry: https://github.com/xzhang
 
 ## Footprint
 ![footprint](https://github.com/xzhang03/picodaq/blob/main/PCB/FDA%20v1.1/footprint.png)
+
+## I2C
+I2C port is provided for future development. See pinout [here](https://github.com/xzhang03/NidaqGUI/blob/master/PCBs/I2C_notes/readme.md)
