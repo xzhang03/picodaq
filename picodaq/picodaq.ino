@@ -59,7 +59,7 @@ float af0, af1, af2, af3; // Output data (converted)
 int32_t ab0[4], ab1[4], ab2[4], ab3[4]; // stores previous 4 data reads at max
 byte adepthw = 0; // pointer to where to save analog data
 byte adepthr = 0; // Pointer to where to grab analog data
-byte adepth_max = 4; // This many analog data points will be averaged and sent out for each picodaq data upload (4 means 0 to 3)
+byte adepth_max = 2; // This many analog data points will be averaged and sent out for each picodaq data upload (4 means 0 to 3)
 
 // ================== Analog calibration ==================
 #define ncal 256
