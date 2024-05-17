@@ -1,6 +1,6 @@
 // File structure
 // Here:  pico core 0 for digital data acquisition and data streaming
-// 1_ADC: pico core 1 for babysitting the ADC and administrative serial communication
+// 1_ADC: pico core 1 for babysitting the ADC and administrative serial communication and i2c
 // 2_epr: eeprom functions
 // 2_sem: serial menu
 // 2_ser: serial communication functions
@@ -112,6 +112,8 @@ byte i, i2;
 unsigned long int c; // Counter
 unsigned long int cmax = 0xFFFFFFFF;
 bool usecmax = false; 
+
+// ===================== Hardware GUI Streaming =====================
 
 
 // Operational Core
