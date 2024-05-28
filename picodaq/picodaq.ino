@@ -21,7 +21,7 @@ const byte ledpin = 25;
 bool ledon = false;
 
 // Digital data
-uint32_t dnow, dout;
+uint32_t dnow, dnow2, dout;
 
 // Digital out (dout0 = adc running)
 const byte ndout = 2;
@@ -86,6 +86,15 @@ I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC16);
 #define eeextcal 0x20
 #define autoeeini true
 
+// ===================== I2c data =====================
+// Pulling additional data via I2c bus. Unclear if this will run into issues with the EEPROM code
+#define i2c_data true
+#define i2c_data_bytes 2 // Default 2 bytes of data
+bool i2c_data_use = true;
+byte i2c_dataadd = 1; // Default where to get i2c data
+byte m_i2c, n_i2c;
+unsigned long int ti2cdebug; // debug
+
 // ===================== Serial =====================
 // Serial
 byte m, n;
@@ -114,7 +123,7 @@ unsigned long int cmax = 0xFFFFFFFF;
 bool usecmax = false; 
 
 // ===================== Hardware GUI Streaming =====================
-
+// TBD
 
 // Operational Core
 void setup() {
@@ -143,6 +152,10 @@ void setup() {
   // I2c
   Wire.setSDA(0);
   Wire.setSCL(1);
+
+  #if i2c_data
+    Wire.begin;
+  #endif
 }
 
 void loop() {
@@ -158,15 +171,69 @@ void loop() {
       t1 = tnow;
       
       // Get datain
-      dnow = 1;
+      #if i2c_data
+        if (i2c_data_use){
+          // If actually use
+          // Save space for data
+          dnow = 0;
+          Wire.requestFrom(i2c_dataadd, i2c_data_bytes);
+        }
+        else{
+          // Not using
+          dnow = 1;
+        }
+      #else
+        // Old (no i2c data) just write a 1 for aliasing check
+        dnow = 1;
+      #endif
+
+      // Shift in digital data
       for (i = 0; i < ndin; i++){
-         dnow = (dnow << 1) + digitalRead(dins[i]);
+        dnow = (dnow << 1) + digitalRead(dins[i]);
       }
-      
+
+      // Get 2 bytes of i2c data
+      #if i2c_data
+        if (i2c_data_use){
+          // Debug for i2c data
+          #if debugmode
+            ti2cdebug = micros();
+          #endif
+
+          while (Wire.available() < i2c_data_bytes){
+            // Nothing just wait for data to be ready
+          }
+
+          // Data shoue be available now
+          m_i2c = Wire.read();
+          n_i2c = Wire.read();
+
+          // Debug record how long it waited
+          #if debugmode
+            ti2cdebug = micros() - ti2cdebug;
+          #endif
+          
+          // Shift m_i2c and n_i2c in
+          dnow2 = (m_i2c << 24) + (n_i2c << 16);
+          dnow = dnow + dnow2;
+
+          // Report time and i2c data
+          #if debugmode
+            Serial.print("I2c data: ");
+            Serial.print(m_i2c);
+            Serial.print(" ");
+            Serial.print(n_i2c);
+            Serial.print(" ");
+            Serial.print(dout2, BIN);
+            Serial.print(". waited (us)");
+            Serial.println(ti2cdebug);
+          #endif
+        }      
+      #endif
+
       // LED
       ledon = !ledon;
       digitalWrite(ledpin, ledon);
-
 
       // Flag data ready
       datagood = true;

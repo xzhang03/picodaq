@@ -704,6 +704,16 @@ void parseserial(void){
         Serial.write(eemprom_dump, 64);
       }
       break;
+
+    case 48:
+      // 48: Use I2c data (n = 1 true) [`]
+      i2c_data_use = (n == 1);
+      break;
+
+    case 49:
+      // 49: I2c data address (n = address)[a]
+      i2c_dataadd = n;
+      break;
   }
 }
 
@@ -727,6 +737,16 @@ void showpara(void){
   }
   Serial.println();
 
+  Serial.println("============== I2c data ==============");
+  Serial.print("Compile i2c data code: ");
+  Serial.println(i2c_data);
+  Serial.print("Use i2c data: ");
+  Serial.println(i2c_data_use);
+  Serial.print("I2c data address: ");
+  Serial.println(i2c_dataadd);
+  Serial.print("I2c data bytes: ");
+  Serial.println(i2c_data_bytes);
+  
   Serial.println("============== Analog ==============");
   Serial.print("N analog inputs: ");
   Serial.println(nain);

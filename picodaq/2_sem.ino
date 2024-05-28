@@ -56,7 +56,9 @@
 // 39: Aplly all calibration to all channels from EEPROM [W]
 // 40: Clear 4 bytes from an EEPROM address (n = address) [X]
 // 47: Dump 64 bytes from eeprom [_]
-// 48: [`]
-// 49: [a]
+
+// ============= I2c data =============
+// 48: Use I2c data (n = 1 true) [`]
+// 49: I2c data address (n = address)[a]
 // 50: [b]
 // 51: [c]
