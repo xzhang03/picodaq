@@ -1,16 +1,33 @@
 // Send data
 void senddata_debug(void){
+  #if send24bittwos
+    // Convert analog data to 24-bit two's complement
+    // Replace the 8 MSB with other stuff if needed
+    aout0 = adc.revtwoscom(aout0);
+    aout1 = adc.revtwoscom(aout1);
+    aout2 = adc.revtwoscom(aout2);
+    aout3 = adc.revtwoscom(aout3);
+  #endif
+  
   Serial.print(c);
   Serial.print(" ");
-  Serial.print(dout, BIN);
-  Serial.print(" ");
+  Serial.println(dout, BIN);
+  
   Serial.print(af0, 5);
   Serial.print(" ");
+  Serial.println(aout0, BIN);
+
   Serial.print(af1, 5);
   Serial.print(" ");
+  Serial.println(aout1, BIN);
+
   Serial.print(af2, 5);
   Serial.print(" ");
-  Serial.println(af3, 5);
+  Serial.println(aout2, BIN);
+
+  Serial.print(af3, 5);
+  Serial.print(" ");
+  Serial.println(aout3, BIN);
   
   // Clear
   clearout();
@@ -18,6 +35,15 @@ void senddata_debug(void){
 
 // Send data
 void senddata(void){
+  #if send24bittwos
+    // Convert analog data to 24-bit two's complement
+    // Replace the 8 MSB with other stuff if needed
+    aout0 = adc.revtwoscom(aout0);
+    aout1 = adc.revtwoscom(aout1);
+    aout2 = adc.revtwoscom(aout2);
+    aout3 = adc.revtwoscom(aout3);
+  #endif
+  
   Serial.write((byte *) &c, 4);
   Serial.write((byte *) &dout, 4);
   Serial.write((byte *) &aout0, 4);
@@ -704,6 +730,16 @@ void parseserial(void){
         Serial.write(eemprom_dump, 64);
       }
       break;
+
+    case 48:
+      // 48: Use I2c data (n = 1 true) [`]
+      i2c_data_use = (n == 1);
+      break;
+
+    case 49:
+      // 49: I2c data address (n = address)[a]
+      i2c_dataadd = n;
+      break;
   }
 }
 
@@ -717,6 +753,8 @@ void showpara(void){
   Serial.println(cmax);
   Serial.print("usecmax: ");
   Serial.println(usecmax);
+  Serial.print("Bytes in serial buffer: ");
+  Serial.println(Serial.available());
   
   Serial.println("============== Digital ==============");
   Serial.print("N digital inputs: ");
@@ -727,6 +765,16 @@ void showpara(void){
   }
   Serial.println();
 
+  Serial.println("============== I2c data ==============");
+  Serial.print("Compile i2c data code: ");
+  Serial.println(i2c_data);
+  Serial.print("Use i2c data: ");
+  Serial.println(i2c_data_use);
+  Serial.print("I2c data address: ");
+  Serial.println(i2c_dataadd);
+  Serial.print("I2c data bytes: ");
+  Serial.println(i2c_data_bytes);
+  
   Serial.println("============== Analog ==============");
   Serial.print("N analog inputs: ");
   Serial.println(nain);
@@ -738,6 +786,8 @@ void showpara(void){
   Serial.println(pow(2, adc_gain));
   Serial.print("ADC buffer depth: ");
   Serial.println(adepth_max);
+  Serial.print("Send data in 24-bit two's complement: ");
+  Serial.println(send24bittwos);
 
   Serial.println("============== Calibration ==============");
   Serial.print("Channel to be externally calibrated: ");

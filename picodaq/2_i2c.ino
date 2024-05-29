@@ -1,3 +1,46 @@
+void requesti2c_data(void){
+  Wire.requestFrom(i2c_dataadd, i2c_data_bytes);
+}
+
+void geti2c_data(void){
+  // Debug for i2c data
+  #if debugmode
+    ti2cdebug = micros();
+  #endif
+
+  #if debugmode
+    while (Wire.available() < i2c_data_bytes){
+      // Nothing just wait for data to be ready
+      Serial.println("Waiting i2c");
+    }
+  #endif
+
+  // Data shoue be available now
+  m_i2c = Wire.read();
+  n_i2c = Wire.read();
+
+  // Debug record how long it waited
+  #if debugmode
+    ti2cdebug = micros() - ti2cdebug;
+  #endif
+  
+  // Shift m_i2c and n_i2c in
+  dnow2 = (m_i2c << 24) + (n_i2c << 16);
+  
+
+  // Report time and i2c data
+  #if debugmode
+    Serial.print("I2c data: ");
+    Serial.print(m_i2c);
+    Serial.print(" ");
+    Serial.print(n_i2c);
+    Serial.print(" ");
+    Serial.print(dnow2, BIN);
+    Serial.print(". waited (us): ");
+    Serial.println(ti2cdebug);
+  #endif
+}
+
 void i2c_scan(void){
   byte error, address;
   int nDevices;
