@@ -80,6 +80,13 @@ void parseserial(void){
       // Zeroing
       c = 0;
       clearout();
+
+      // Declare i2c streaming busy if using it
+      #if i2cstreaming
+        if (i2c_streaming_use){
+          i2c_streaming_busy(i2c_streaming_add);
+        }
+      #endif
       
       // Initialize ADC and ADC data buffer
       while (!adc.isDataReady()){
@@ -740,6 +747,16 @@ void parseserial(void){
       // 49: I2c data address (n = address)[a]
       i2c_dataadd = n;
       break;
+
+    case  50:
+      // 50: Use I2c streaming (n = 1 true) [b]
+      i2c_streaming_use = (n == 1);
+      break;
+
+    case 51:
+      // 51: I2c streaming address (n = address) [c]
+      i2c_streaming_add = n;
+      break;
   }
 }
 
@@ -774,6 +791,20 @@ void showpara(void){
   Serial.println(i2c_dataadd);
   Serial.print("I2c data bytes: ");
   Serial.println(i2c_data_bytes);
+
+  Serial.println("============== I2c streaming ==============");
+  Serial.print("Compile i2c streaming code: ");
+  Serial.println(i2cstreaming);
+  Serial.print("Use i2c streaming: ");
+  Serial.println(i2c_streaming_use);
+  Serial.print("I2c streaming bytes: ");
+  Serial.println(i2c_streaming_bytes);
+  Serial.print("I2c streaming address: ");
+  Serial.println(i2c_streaming_add);
+  Serial.print("i2c streaming ON: ");
+  Serial.println(i2c_streaming_on);
+  Serial.print("i2c streaming CH: ");
+  Serial.println(i2c_streaming_ch);
   
   Serial.println("============== Analog ==============");
   Serial.print("N analog inputs: ");

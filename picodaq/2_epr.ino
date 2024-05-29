@@ -1,5 +1,4 @@
 // EEPROM functions go here
-
 bool eeprom_ini(void){
   // Initialize
   #if !autoeeini

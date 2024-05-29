@@ -58,6 +58,14 @@ void loop1() {
   }
   else {
     // Non-pulsing - good to change parameters;
+    #if i2cstreaming
+      if (i2c_streaming_use){
+        // Reading in the background if streaming is turned on
+        if (adc.isDataReady()) { // Using non-interrupt isdataready to not mess up i2c
+          res = adc.readADC(); // Read
+        }
+      }
+    #endif
   }
 }
 
