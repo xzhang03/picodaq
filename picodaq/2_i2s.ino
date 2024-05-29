@@ -83,13 +83,13 @@ void i2c_streaming_main(void){
     }
   }
   
-  // 1000 request
-  else if (i2c_sc_large == 1000){
+  // 2400 request
+  else if (i2c_sc_large == 2400){
     requesti2c_data(i2c_streaming_add);
   }
 
-  // 1250 process new data
-  else if (i2c_sc_large == 1250){
+  // 2490 process new data
+  else if (i2c_sc_large == 2490){
     if (Wire.available() > 1){
       // Expect 2 bytes of data
       m_i2cs = Wire.read();
