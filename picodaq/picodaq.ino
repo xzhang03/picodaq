@@ -8,7 +8,7 @@
 // ADS131M04.cpp - library helper
 
 // Debug
-#define debugmode true
+#define debugmode false
 
 // Version
 #define pdvers "v1.3"

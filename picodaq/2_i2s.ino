@@ -49,16 +49,16 @@ void i2c_streaming_main(void){
         i2c_streaming_data[i2c_sc_small] = 0;
       }
 
-      #if debugmode
-        Serial.print("Data ");
-        Serial.print(i2c_sc_small);
-        Serial.print(". CH ");
-        Serial.print(i2c_streaming_ch);
-        Serial.print(". ");
-        Serial.print(aout_stream, BIN);
-        Serial.print(" => ");
-        Serial.println(i2c_streaming_data[i2c_sc_small] , BIN);
-      #endif
+//      #if debugmode
+//        Serial.print("Data ");
+//        Serial.print(i2c_sc_small);
+//        Serial.print(". CH ");
+//        Serial.print(i2c_streaming_ch);
+//        Serial.print(". ");
+//        Serial.print(aout_stream, BIN);
+//        Serial.print(" => ");
+//        Serial.println(i2c_streaming_data[i2c_sc_small] , BIN);
+//      #endif
     }
   }
   
@@ -76,8 +76,9 @@ void i2c_streaming_main(void){
       Wire.endTransmission();
 
       #if debugmode
+        ti2cdebug = micros() - ti2cdebug;
         Serial.print("I2c send (us): ");
-        Serial.println(micros() - ti2cdebug);
+        Serial.println(ti2cdebug);
       #endif
     }
   }
