@@ -1,5 +1,5 @@
-void requesti2c_data(void){
-  Wire.requestFrom(i2c_dataadd, i2c_data_bytes);
+void requesti2c_data(byte address){
+  Wire.requestFrom(address, i2c_data_bytes);
 }
 
 void geti2c_data(void){
@@ -27,7 +27,6 @@ void geti2c_data(void){
   // Shift m_i2c and n_i2c in
   dnow2 = (m_i2c << 24) + (n_i2c << 16);
   
-
   // Report time and i2c data
   #if debugmode
     Serial.print("I2c data: ");

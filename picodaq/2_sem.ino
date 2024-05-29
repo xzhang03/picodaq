@@ -60,8 +60,10 @@
 // ============= I2c data =============
 // 48: Use I2c data (n = 1 true) [`]
 // 49: I2c data address (n = address)[a]
-// 50: [b]
-// 51: [c]
+
+// ============= I2c streaming =============
+// 50: Use I2c streaming (n = 1 true) [b]
+// 51: I2c streaming address (n = address) [c]
 // 52: [d]
 // 53: [e]
 // 54: [f]
