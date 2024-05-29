@@ -91,7 +91,7 @@ I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC16);
 
 // ===================== I2c data =====================
 // Pulling additional data via I2c bus. Unclear if this will run into issues with the EEPROM code
-#define i2c_data true
+#define i2c_data false
 #define i2c_data_bytes 2 // Default 2 bytes of data
 bool i2c_data_use = true;
 byte i2c_dataadd = 1; // Default where to get i2c data
