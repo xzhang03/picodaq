@@ -11,7 +11,7 @@
 #define debugmode false
 
 // Version
-#define pdvers "v1.1"
+#define pdvers "v1.2"
 
 // ===================== Digital =====================
 // Digital inputs
@@ -60,6 +60,9 @@ int32_t ab0[4], ab1[4], ab2[4], ab3[4]; // stores previous 4 data reads at max
 byte adepthw = 0; // pointer to where to save analog data
 byte adepthr = 0; // Pointer to where to grab analog data
 byte adepth_max = 2; // This many analog data points will be averaged and sent out for each picodaq data upload (4 means 0 to 3)
+
+// Send data in 24-bit two's complement (freeing up 1 byte per analog channel)
+#define send24bittwos false
 
 // ================== Analog calibration ==================
 #define ncal 256
@@ -154,7 +157,7 @@ void setup() {
   Wire.setSCL(1);
 
   #if i2c_data
-    Wire.begin;
+    Wire.begin();
   #endif
 }
 
@@ -176,7 +179,7 @@ void loop() {
           // If actually use
           // Save space for data
           dnow = 0;
-          Wire.requestFrom(i2c_dataadd, i2c_data_bytes);
+          requesti2c_data();
         }
         else{
           // Not using
@@ -191,45 +194,6 @@ void loop() {
       for (i = 0; i < ndin; i++){
         dnow = (dnow << 1) + digitalRead(dins[i]);
       }
-
-      // Get 2 bytes of i2c data
-      #if i2c_data
-        if (i2c_data_use){
-          // Debug for i2c data
-          #if debugmode
-            ti2cdebug = micros();
-          #endif
-
-          while (Wire.available() < i2c_data_bytes){
-            // Nothing just wait for data to be ready
-          }
-
-          // Data shoue be available now
-          m_i2c = Wire.read();
-          n_i2c = Wire.read();
-
-          // Debug record how long it waited
-          #if debugmode
-            ti2cdebug = micros() - ti2cdebug;
-          #endif
-          
-          // Shift m_i2c and n_i2c in
-          dnow2 = (m_i2c << 24) + (n_i2c << 16);
-          dnow = dnow + dnow2;
-
-          // Report time and i2c data
-          #if debugmode
-            Serial.print("I2c data: ");
-            Serial.print(m_i2c);
-            Serial.print(" ");
-            Serial.print(n_i2c);
-            Serial.print(" ");
-            Serial.print(dout2, BIN);
-            Serial.print(". waited (us)");
-            Serial.println(ti2cdebug);
-          #endif
-        }      
-      #endif
 
       // LED
       ledon = !ledon;
@@ -256,7 +220,15 @@ void loop() {
     tsend = tnow;
     sync_high = true;
     digitalWrite(douts[1], HIGH);
-    
+
+    // Get 2 bytes of i2c data
+    #if i2c_data
+      if (i2c_data_use){
+        geti2c_data();
+        dnow = dnow + dnow2;
+      }      
+    #endif
+      
     // Get DC
     dout = dnow;
 
