@@ -8,10 +8,10 @@
 // ADS131M04.cpp - library helper
 
 // Debug
-#define debugmode false
+#define debugmode true
 
 // Version
-#define pdvers "v1.2"
+#define pdvers "v1.3"
 
 // ===================== Digital =====================
 // Digital inputs
@@ -93,10 +93,23 @@ I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC16);
 // Pulling additional data via I2c bus. Unclear if this will run into issues with the EEPROM code
 #define i2c_data false
 #define i2c_data_bytes 2 // Default 2 bytes of data
-bool i2c_data_use = true;
+bool i2c_data_use = false;
 byte i2c_dataadd = 1; // Default where to get i2c data
 byte m_i2c, n_i2c;
 unsigned long int ti2cdebug; // debug
+
+// ===================== I2c hardware GUI streaming =====================
+#define i2cstreaming true
+#define i2c_streaming_bytes 250 // Default 250 bytes of data
+bool i2c_streaming_use = true;
+byte i2c_streaming_add = 1; // Default where to get i2c data
+byte m_i2cs, n_i2cs;
+bool i2c_streaming_on = false;
+byte i2c_streaming_ch = 0;
+byte i2c_streaming_data[i2c_streaming_bytes];
+uint16_t i2c_sc_large = 0; // Large counter 0-2499
+uint16_t i2c_sc_small = 0; // Small counter 0-249 
+const byte handshake[2] = {211, 44}; // Arbitrary handshake signal. If no data inbetween, it means busy
 
 // ===================== Serial =====================
 // Serial
@@ -104,7 +117,7 @@ byte m, n;
 
 // ===================== Operation =====================
 // Sampling rate
-uint32_t fs = 1; // In Hz
+uint32_t fs = 2500; // In Hz
 unsigned long int ts = 1000000 / fs;  
 
 // Timers
@@ -125,8 +138,7 @@ unsigned long int c; // Counter
 unsigned long int cmax = 0xFFFFFFFF;
 bool usecmax = false; 
 
-// ===================== Hardware GUI Streaming =====================
-// TBD
+
 
 // Operational Core
 void setup() {
@@ -156,9 +168,18 @@ void setup() {
   Wire.setSDA(0);
   Wire.setSCL(1);
 
-  #if i2c_data
+  #if i2c_data || i2cstreaming
     Wire.begin();
   #endif
+
+  // Check if the streaming device exists
+  if (i2c_streaming_use){
+    Wire.beginTransmission(i2c_streaming_add);
+    if (Wire.endTransmission() != 0){
+      // No i2c streaming device
+      i2c_streaming_use = false;
+    }
+  }
 }
 
 void loop() {
@@ -179,7 +200,7 @@ void loop() {
           // If actually use
           // Save space for data
           dnow = 0;
-          requesti2c_data();
+          requesti2c_data(i2c_dataadd);
         }
         else{
           // Not using
@@ -201,6 +222,20 @@ void loop() {
 
       // Flag data ready
       datagood = true;
+    }
+  }
+  else{
+    // Not pulsing: i2c streaming possible
+    // I2c GUI data streaming
+    if ((tnow - t1) >= ts){
+      #if i2cstreaming
+        if (i2c_streaming_use){
+          // Reset timer
+          t1 = tnow;
+      
+          i2c_streaming_main();
+        }
+      #endif
     }
   }
   
