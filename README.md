@@ -63,6 +63,6 @@ This part has been integrated into Nanosec photometry: https://github.com/xzhang
 I2C port is provided for collecting additional data and for i2c streaming. See pinout [here](https://github.com/xzhang03/NidaqGUI/blob/master/PCBs/I2C_notes/readme.md)
 
 ## Change log
-v1.1 Picodaq calibration
-v1.2 Added data collection via i2c (i2c data). 2 Bytes per data point
-v1.3 Added i2c-based hardware data streaming (picodaq gui)
+1. v1.1 Picodaq calibration
+2. v1.2 Added data collection via i2c (i2c data). 2 Bytes per data point
+3. v1.3 Added i2c-based hardware data streaming (picodaq gui)
