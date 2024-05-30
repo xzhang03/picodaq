@@ -2,8 +2,11 @@
 void i2c_streaming_main(void){
   // Advance i2c streaming large counter
   i2c_sc_large++;
-  if (i2c_sc_large == 2500){
+  if ((tnowmillis - tnowmillis_stream) >= 1000){
     i2c_sc_large = 0;
+    tnowmillis_stream = tnowmillis;
+    requesti2c_flag = true;
+    receivei2c_flag = true;
   }
   if (i2c_sc_large < i2c_streaming_bytes){
     // Advance i2c streaming small counter
@@ -11,7 +14,9 @@ void i2c_streaming_main(void){
   }
 
 //  #if debugmode
-//    Serial.print("I2c streaming indices: ");
+//    Serial.print("T = ");
+//    Serial.print(tnowmillis - tnowmillis_stream);
+//    Serial.print(". I2c streaming indices: ");
 //    Serial.print(i2c_sc_large);
 //    Serial.print(" ");
 //    Serial.println(i2c_sc_small);
@@ -68,13 +73,15 @@ void i2c_streaming_main(void){
       #if debugmode
         ti2cdebug = micros();
       #endif
-      
+
+      digitalWrite(ledpin, HIGH);
       Wire.beginTransmission(i2c_streaming_add);
       for (uint16_t ind = 0; ind < i2c_streaming_bytes; ind++){
         Wire.write(i2c_streaming_data[ind]);
       }
       Wire.endTransmission();
-
+      digitalWrite(ledpin, LOW);
+      
       #if debugmode
         ti2cdebug = micros() - ti2cdebug;
         Serial.print("I2c send (us): ");
@@ -83,13 +90,21 @@ void i2c_streaming_main(void){
     }
   }
   
-  // 2400 request
-  else if (i2c_sc_large == 2400){
+  // I2c request
+  else if (requesti2c_flag && ((tnowmillis - tnowmillis_stream) > 990)){
     requesti2c_data(i2c_streaming_add);
+    requesti2c_flag = false;
+
+    #if debugmode
+      Serial.print("T=");
+      Serial.print(tnowmillis - tnowmillis_stream);
+      Serial.println(". Requested I2c data.");
+    #endif
   }
 
-  // 2490 process new data
-  else if (i2c_sc_large == 2490){
+  // I2c process new data
+  else if (receivei2c_flag && ((tnowmillis - tnowmillis_stream) > 992)){
+    receivei2c_flag = false;
     if (Wire.available() > 1){
       // Expect 2 bytes of data
       m_i2cs = Wire.read();
@@ -101,7 +116,9 @@ void i2c_streaming_main(void){
       // Channel
       i2c_streaming_ch = n_i2cs;
       #if debugmode
-        Serial.print("Cycle check - Streaming: ");
+        Serial.print("T=");
+        Serial.print(tnowmillis - tnowmillis_stream);
+        Serial.print(". Cycle check - Streaming: ");
         Serial.print(i2c_streaming_on);
         Serial.print(" , Ch: ");
         Serial.println(i2c_streaming_ch);

@@ -7,6 +7,8 @@
 // ADS131M04.cpp - library cpp
 // ADS131M04.cpp - library helper
 
+// Stephen X. Zhang 5/30/2024
+
 // Debug
 #define debugmode false
 
@@ -107,10 +109,13 @@ byte m_i2cs, n_i2cs;
 bool i2c_streaming_on = false;
 byte i2c_streaming_ch = 0;
 byte i2c_streaming_data[i2c_streaming_bytes];
-uint16_t i2c_sc_large = 0; // Large counter 0-2499
-uint16_t i2c_sc_small = 0; // Small counter 0-249 
 const byte handshake[2] = {211, 44}; // Arbitrary handshake signal. If no data inbetween, it means busy
-
+unsigned long int tnowmillis_stream = 0;
+uint16_t i2c_sc_large = 0; // Large counter 0-2499, probably end before 2499
+uint16_t i2c_sc_small = 0; // Small counter 0-249 
+bool requesti2c_flag = false;
+bool receivei2c_flag = false;
+  
 // ===================== Serial =====================
 // Serial
 byte m, n;
@@ -173,6 +178,7 @@ void setup() {
   #endif
 
   // Check if the streaming device exists
+  delayMicroseconds(10000);
   if (i2c_streaming_use){
     Wire.beginTransmission(i2c_streaming_add);
     if (Wire.endTransmission() != 0){
@@ -232,7 +238,6 @@ void loop() {
         if (i2c_streaming_use){
           // Reset timer
           t1 = tnow;
-      
           i2c_streaming_main();
         }
       #endif

@@ -1,5 +1,7 @@
-void requesti2c_data(byte address){
-  Wire.requestFrom(address, i2c_data_bytes);
+uint8_t requesti2c_data(byte address){
+  uint8_t returndata;
+  returndata = Wire.requestFrom(address, i2c_data_bytes);
+  return returndata;
 }
 
 void geti2c_data(void){
