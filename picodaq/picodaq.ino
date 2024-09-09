@@ -6,6 +6,12 @@
 // 2_ser: serial communication functions
 // ADS131M04.cpp - library cpp
 // ADS131M04.cpp - library helper
+//
+// Core: Use the earlephilhower core
+// https://github.com/earlephilhower/arduino-pico?tab=readme-ov-file#installation
+//
+// Libraries needed:
+// i2c_eeprom (installed using the arduino library manager)
 
 // Stephen X. Zhang 5/30/2024
 
@@ -13,7 +19,7 @@
 #define debugmode false
 
 // Version
-#define pdvers "v1.3"
+#define pdvers "v1.31"
 
 // ===================== Digital =====================
 // Digital inputs
