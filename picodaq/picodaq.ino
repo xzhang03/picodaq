@@ -29,6 +29,9 @@ uint32_t dnow, dnow2, dout;
 const byte ndout = 2;
 const byte douts[ndout] = {22, 28};
 
+// Dout 1 as a 2.5 kHz sync or a single block
+#define usedout1assync true // Change this to false to enable single-block digital output
+
 // ===================== Analog =====================
 #include "ADS131M04.h"
 #include "SPI.h"
@@ -259,7 +262,9 @@ void loop() {
     // Use dout1 to send sync sig
     tsend = tnow;
     sync_high = true;
-    digitalWrite(douts[1], HIGH);
+    #if usedout1assync
+      digitalWrite(douts[1], HIGH);
+    #endif
 
     // Get 2 bytes of i2c data
     #if i2c_data
@@ -290,7 +295,9 @@ void loop() {
 
   // Terminate sync
   if (sync_high && ((tnow - tsend) >= syncwidth)){
-    digitalWrite(douts[1], LOW);
+    #if usedout1assync
+      digitalWrite(douts[1], LOW);
+    #endif
     sync_high = false;
   }
 }

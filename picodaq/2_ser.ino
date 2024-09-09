@@ -81,6 +81,11 @@ void parseserial(void){
       c = 0;
       clearout();
 
+      // Send the block signal
+      #if (!usedout1assync)
+        digitalWrite(douts[1], HIGH);
+      #endif
+
       // Declare i2c streaming busy if using it
       #if i2cstreaming
         if (i2c_streaming_use){
