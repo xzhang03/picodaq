@@ -7,7 +7,7 @@
 // 0: stop recording
 // 2: new cycle time (10000 us /n, n in x 100 Hz)
 // 9: Show all parameters
-// 38: Version
+// 38: Version [V]
 // 41: Set cmax MSB (n = cmax) [Y]
 // 42: shift cmax to the left by 8 bits and add n [Z]
 // 43: Use cmax (n = 1 true) [[]
