@@ -17,6 +17,7 @@
 
 // Debug
 #define debugmode false
+#define debugpinADCready false
 
 // Version
 #define pdvers "v1.31"
@@ -152,6 +153,10 @@ unsigned long int c; // Counter
 unsigned long int cmax = 0xFFFFFFFF;
 bool usecmax = false; 
 
+// ================= debug =================
+unsigned long int tdebug = 0;
+unsigned long int tpingcycle = 200; // in ms
+bool pingadcnow = false;
 
 
 // Operational Core
@@ -201,6 +206,7 @@ void loop() {
   // Timers
   tnow = micros();
   tnowmillis = tnow / 1000;
+  
 
   if (pulse){
     if ((tnow - t1) >= ts){
@@ -306,4 +312,14 @@ void loop() {
     #endif
     sync_high = false;
   }
+
+  // debug ping adc
+  #if debugpinADCready
+    if ((tnowmillis - tdebug) > tpingcycle){
+      // Time to pin
+      tdebug = tnowmillis;
+      pingadcnow = true;
+    }
+  #endif
+  
 }

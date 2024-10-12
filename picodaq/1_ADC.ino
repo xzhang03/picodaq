@@ -67,6 +67,31 @@ void loop1() {
       }
     #endif
   }
+
+  // debug ping adc
+  #if debugpinADCready
+    if(pingadcnow){
+      pingadcnow = false;
+
+      uint16_t status_ping = adc.readRegister(REG_STATUS);
+      #if debugmode
+        Serial.print("ADC status:");
+        printBits(status_ping, 15);
+      #endif
+
+      // Shrink
+      status_ping = status_ping & 0B1111;
+
+      // Use onboard LED
+      if (status_ping > 0){
+        // Ready
+        digitalWrite(ledpin, HIGH);
+      }
+      else {
+        digitalWrite(ledpin, LOW);
+      }
+    }
+  #endif
 }
 
 void adc_readdiv(void) {
