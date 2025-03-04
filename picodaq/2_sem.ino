@@ -11,6 +11,7 @@
 // 41: Set cmax MSB (n = cmax) [Y]
 // 42: shift cmax to the left by 8 bits and add n [Z]
 // 43: Use cmax (n = 1 true) [[]
+// 252: Universal identifier
 
 // ============= ADC =============
 // 3: ADC freq (n = 0 - 7)

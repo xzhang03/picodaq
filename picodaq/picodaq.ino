@@ -20,7 +20,7 @@
 #define debugpinADCready false
 
 // Version
-#define pdvers "v1.31"
+#define pdvers "v1.32"
 
 // ===================== Digital =====================
 // Digital inputs

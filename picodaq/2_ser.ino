@@ -71,6 +71,11 @@ void parseserial(void){
   #endif
 
   switch (m){
+    case 252:
+      // Universal identifier
+      Serial.print("I'm picodaq.");
+      break;
+      
     case 1:
       // Just started pulsing (picodaq running)
       pulse = true;
