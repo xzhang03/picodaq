@@ -55,6 +55,10 @@ struct adcOutputraw{ // ADC output in two's complement
 #define OSR_8192 6   // 500 SPS
 #define OSR_16384 7  // 250 SPS
 
+#define WLEN_16 0B00      // 16 bits data word
+#define WLEN_24 0B01      // 24 bits data word (default)
+#define WLEN_32_pad 0B10  // 32 bits; zero padding
+#define WLEN_32_ext 0B11  // 32 bits; MSB sign extension
 
 // Commands
 #define CMD_NULL 0x0000 // This command gives the STATUS REGISTER
@@ -258,6 +262,10 @@ public:
   uint8_t ADS131M04_RESET_PIN;
   adcOutput readADC(void);
   adcOutputraw readADCraw(void);
+  adcOutput readCh0(void);
+  adcOutputraw readCh0raw(void);
+  adcOutput readCh01(void);
+  adcOutputraw readCh01raw(void);
     
   void begin(uint8_t clk_pin, uint8_t miso_pin, uint8_t mosi_pin, uint8_t cs_pin, uint8_t drdy_pin, uint8_t reset_pin);
   int8_t isDataReadySoft(byte channel);
@@ -275,6 +283,7 @@ public:
   bool setChannelOffsetCalibration(uint8_t channel, int32_t offset);
   bool setChannelGainCalibration(uint8_t channel, uint32_t gain);
   bool setOsr(uint16_t osr);
+  bool setWLENGTH(uint8_t bits);
   uint16_t readRegister(uint8_t address);
   void reset(void);
   bool command(uint16_t cmd);

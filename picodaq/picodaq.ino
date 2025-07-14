@@ -17,10 +17,9 @@
 
 // Debug
 #define debugmode false
-#define debugpinADCready false
 
 // Version
-#define pdvers "v1.32"
+#define pdvers "v1.33"
 
 // ===================== Digital =====================
 // Digital inputs
@@ -75,6 +74,11 @@ byte adepth_max = 2; // This many analog data points will be averaged and sent o
 
 // Send data in 24-bit two's complement (freeing up 1 byte per analog channel)
 #define send24bittwos false
+
+// Ping ADC on startup
+#define pingadconstartup true
+#define nchecks 5
+byte nchecksleft = 0;
 
 // ================== Analog calibration ==================
 #define ncal 256
@@ -153,10 +157,6 @@ unsigned long int c; // Counter
 unsigned long int cmax = 0xFFFFFFFF;
 bool usecmax = false; 
 
-// ================= debug =================
-unsigned long int tdebug = 0;
-unsigned long int tpingcycle = 200; // in ms
-bool pingadcnow = false;
 
 
 // Operational Core
@@ -313,13 +313,5 @@ void loop() {
     sync_high = false;
   }
 
-  // debug ping adc
-  #if debugpinADCready
-    if ((tnowmillis - tdebug) > tpingcycle){
-      // Time to pin
-      tdebug = tnowmillis;
-      pingadcnow = true;
-    }
-  #endif
-  
+ 
 }

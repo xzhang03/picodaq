@@ -24,6 +24,13 @@ void setup1() {
   
   // Delay
   delay(100);
+      
+  // Ping adc on startup
+  #if pingadconstartup
+    nchecksleft = nchecks;
+  #endif
+  
+  
 }
 
 void loop1() {
@@ -66,32 +73,33 @@ void loop1() {
         }
       }
     #endif
+
+    // Non-pulsing - good to ping adc status
+    #if pingadconstartup
+      if (nchecksleft > 0){     
+        uint16_t status_ping = adc.readRegister(REG_STATUS);
+        #if debugmode
+          Serial.print("ADC status:");
+          printBits(status_ping, 15);
+        #endif
+        
+        // Shrink
+        status_ping = status_ping & 0B1111;
+  
+        // Use onboard LED
+        if (status_ping > 0){
+          // Ready
+          digitalWrite(ledpin, HIGH);
+          nchecksleft = 0;
+        }
+        else {
+          digitalWrite(ledpin, LOW);
+          nchecksleft--;
+        }
+      }
+    #endif
   }
 
-  // debug ping adc
-  #if debugpinADCready
-    if(pingadcnow){
-      pingadcnow = false;
-
-      uint16_t status_ping = adc.readRegister(REG_STATUS);
-      #if debugmode
-        Serial.print("ADC status:");
-        printBits(status_ping, 15);
-      #endif
-
-      // Shrink
-      status_ping = status_ping & 0B1111;
-
-      // Use onboard LED
-      if (status_ping > 0){
-        // Ready
-        digitalWrite(ledpin, HIGH);
-      }
-      else {
-        digitalWrite(ledpin, LOW);
-      }
-    }
-  #endif
 }
 
 void adc_readdiv(void) {

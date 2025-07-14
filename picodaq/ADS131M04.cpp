@@ -280,6 +280,17 @@ bool ADS131M04::setOsr(uint16_t osr){
   }
 }
 
+bool ADS131M04::setWLENGTH(uint8_t bits){
+  // Set word length. Breaks a lot of things.
+  if (bits > 3)  {
+    return false;
+  }
+  else{
+    writeRegisterMasked(REG_MODE, bits << 8 , REGMASK_MODE_WLENGTH);
+    return true;
+  }
+}
+
 bool ADS131M04::setChannelEnable(uint8_t channel, uint16_t enable){
   bool returnval = false;
   
@@ -589,6 +600,136 @@ adcOutputraw ADS131M04::readADCraw(void){
   SPI.transfer(0x00);
 
   delayMicroseconds(1);
+  digitalWrite(ADS131M04_CS_PIN, HIGH);
+
+  return res;
+}
+
+adcOutput ADS131M04::readCh0(void){
+  uint8_t x = 0;
+  uint8_t x2 = 0;
+  uint8_t x3 = 0;
+  int32_t aux;
+  adcOutput res;
+
+  digitalWrite(ADS131M04_CS_PIN, LOW);
+  delayMicroseconds(1);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  SPI.transfer(0x00);
+
+  res.status = ((x << 8) | x2);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  aux = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+  aux = twoscom(aux);
+  res.ch0 = aux;
+
+//  delayMicroseconds(1);
+  digitalWrite(ADS131M04_CS_PIN, HIGH);
+
+  return res;
+}
+
+adcOutputraw ADS131M04::readCh0raw(void){
+  uint8_t x = 0;
+  uint8_t x2 = 0;
+  uint8_t x3 = 0;
+  int32_t aux;
+  adcOutputraw res;
+
+  digitalWrite(ADS131M04_CS_PIN, LOW);
+  delayMicroseconds(1);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  SPI.transfer(0x00);
+
+  res.status = ((x << 8) | x2);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  res.ch0 = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+
+//  delayMicroseconds(1);
+  digitalWrite(ADS131M04_CS_PIN, HIGH);
+
+  return res;
+}
+
+adcOutput ADS131M04::readCh01(void){
+  uint8_t x = 0;
+  uint8_t x2 = 0;
+  uint8_t x3 = 0;
+  int32_t aux;
+  adcOutput res;
+
+  digitalWrite(ADS131M04_CS_PIN, LOW);
+  delayMicroseconds(1);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  SPI.transfer(0x00);
+
+  res.status = ((x << 8) | x2);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  aux = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+  aux = twoscom(aux);
+  res.ch0 = aux;
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  aux = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+  aux = twoscom(aux);
+  res.ch1 = aux;
+
+//  delayMicroseconds(1);
+  digitalWrite(ADS131M04_CS_PIN, HIGH);
+
+  return res;
+}
+
+adcOutputraw ADS131M04::readCh01raw(void){
+  uint8_t x = 0;
+  uint8_t x2 = 0;
+  uint8_t x3 = 0;
+  int32_t aux;
+  adcOutputraw res;
+
+  digitalWrite(ADS131M04_CS_PIN, LOW);
+  delayMicroseconds(1);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  SPI.transfer(0x00);
+
+  res.status = ((x << 8) | x2);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  res.ch0 = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+
+  x = SPI.transfer(0x00);
+  x2 = SPI.transfer(0x00);
+  x3 = SPI.transfer(0x00);
+
+  res.ch1 = (((x << 16) | (x2 << 8) | x3) & 0x00FFFFFF);
+
+//  delayMicroseconds(1);
   digitalWrite(ADS131M04_CS_PIN, HIGH);
 
   return res;
