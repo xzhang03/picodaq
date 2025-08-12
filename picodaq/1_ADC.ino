@@ -29,8 +29,6 @@ void setup1() {
   #if pingadconstartup
     nchecksleft = nchecks;
   #endif
-  
-  
 }
 
 void loop1() {
