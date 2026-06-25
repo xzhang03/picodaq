@@ -59,6 +59,9 @@ This part has been integrated into Nanosec photometry: https://github.com/xzhang
 ## Footprint
 ![footprint](https://github.com/xzhang03/picodaq/blob/main/PCB/picodaq/footprint.png)
 
+## Schematics
+![schematics](https://github.com/xzhang03/picodaq/blob/main/PCB/picodaq/PicoDAQ.png)
+
 ## I2C
 I2C port is provided for collecting additional data and for i2c streaming. See pinout [here](https://github.com/xzhang03/NidaqGUI/blob/master/PCBs/I2C_notes/readme.md)
 
